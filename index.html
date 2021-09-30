@@ -1,0 +1,299 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Практическая работа №4</title>
+		<style type="text/css">
+		input {
+			width: 300px;
+		}
+		</style>
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<script src="js/bootstrap.bundle.min.js"></script>
+		<script>
+		function xor(a, b){return (a === b ? 0 : 1);}
+		function and(a, b){return a == 1 && b == 1 ? 1 : 0;}
+		function or(a, b){return (a || b);}
+		
+		function halfAdder(a, b){
+		  const sum = xor(a,b);
+		  const carry = and(a,b);
+		  return [sum, carry];
+		}
+		
+		function fullAdder(a, b, carry){
+		  halfAdd = halfAdder(a,b);
+		  const sum = xor(carry, halfAdd[0]);
+		  carry = and(carry, halfAdd[0]);
+		  carry = or(carry, halfAdd[1]);
+		  return [sum, carry];
+		}
+
+		function addBinary(a, b){
+
+		  let sum = '';
+		  let carry = '';
+
+		  for(var i = a.length-1;i>=0; i--){
+			if(i == a.length-1){
+			  const halfAdd1 = halfAdder(a[i],b[i]);
+			  sum = halfAdd1[0]+sum;
+			  carry = halfAdd1[1];
+			}else{
+			  const fullAdd = fullAdder(a[i],b[i],carry);
+			  sum = fullAdd[0]+sum;
+			  carry = fullAdd[1];
+			}
+		  }
+
+		  return carry ? carry + sum : sum;
+		}
+		
+		function bin(dec){
+			dec = Math.trunc(dec);
+			if(dec >= 0) {
+				return dec.toString(2);
+			}
+			else {
+				return (~dec).toString(2);
+			}
+		}
+		
+		function isInt(n) {
+		   return n % 1 === 0;
+		}
+		
+		function roughScale(x) {
+		  const parsed = parseInt(x, 2);
+		  if (isNaN(parsed)) { return 0; }
+		  return parsed;
+		}
+		
+		function perevod32begin() {
+			var v = [];
+			for (let i = 1; i <= 10; i++) {
+				var f1 = 0;
+				var c = document.getElementById('perevod32text' + String(i)).value;
+				if (c.indexOf('/') != -1) {
+					var razd = c.split("/");
+					var a = Number(razd[0]);
+					var b = Number(razd[1]);
+					a = a / b;
+					f1 = 1;
+				}
+				if (f1 == 0) {
+					a = Number(c);
+				}
+				if (c == '') {
+					document.getElementById('perevod32output' + String(i)).innerHTML = "<b>" + i + ".</b>";
+				} else {
+					if (isNaN(a)) {
+						document.getElementById('perevod32output' + String(i)).innerHTML = "<b>" + i + ".</b> Вряд ли это число...";
+					} else {
+						res = perevod32(a);
+						v[i] = res[0];
+						if (res[1]) {
+							document.getElementById('perevod32output' + String(i)).innerHTML = "<b>" + i + ". " + c + "</b> с погрешностью <input readonly type='text' value='" + res[0] + "'>";
+						} else {
+							document.getElementById('perevod32output' + String(i)).innerHTML = "<b>" + i + ". " + c + "</b> без погрешности <input readonly type='text' value='" + res[0] + "'>";
+						}
+					}
+				}
+			}
+			for (let i = 1; i <= 4; i++) {
+				var f1 = 0;
+				var c = document.getElementById('poteri32text' + String(i)).value;
+				if (c.indexOf('/') != -1) {
+					var razd = c.split("/");
+					var a = Number(razd[0]);
+					var b = Number(razd[1]);
+					a = a / b;
+					f1 = 1;
+				}
+				if (c.indexOf('e') != -1) {
+					var razd = c.split("e");
+					var a = Number(razd[0]);
+					var b = Number(razd[1]);
+					a = a * Math.pow(10, b);
+					f1 = 1;
+				}
+				if (f1 == 0) {
+					a = Number(c);
+				}
+				if (c == '') {
+					document.getElementById('poteri32output' + String(i)).innerHTML = "<b>" + i + ".</b>";
+				} else {
+					if (isNaN(a)) {
+						document.getElementById('poteri32output' + String(i)).innerHTML = "<b>" + i + ".</b> Вряд ли это число...";
+					} else {
+						res = perevod32(a)[0];
+						res1 = perevod32(a + 1)[0];
+						res2 = perevod32(a + 100)[0];
+						res3 = perevod32(a + 1000)[0];
+						if (res3 == res && res2 == res && res1 == res) {
+							document.getElementById('poteri32output' + String(i)).innerHTML = "<b>" + i + ".</b> " + c + ": x + 1 = x; x + 100 = x; x + 1000 = x";
+						} else if (res2 == res && res1 == res) {
+							document.getElementById('poteri32output' + String(i)).innerHTML = "<b>" + i + ".</b> " + c + ": x + 1 = x; x + 100 = x";
+						} else if (res1 == res) {
+							document.getElementById('poteri32output' + String(i)).innerHTML = "<b>" + i + ".</b> " + c + ": x + 1 = x";
+						} else {
+							document.getElementById('poteri32output' + String(i)).innerHTML = "<b>" + i + ".</b> " + c + ": ничего не отмечаем";
+						}
+					}
+				}
+			}
+			var a = v[1];
+			var b = v[2];
+			if (isNaN(a) || isNaN(b)) {
+				document.getElementById('sl32output1').innerHTML = "<input readonly type='text' value=''><br><input readonly type='text' value=''><br><input readonly type='text' value=''><br>";
+			} else {
+				var osna = a.slice(1, 9);
+				var ma = a.slice(9, 32);
+				var osnb = b.slice(1, 9);
+				var mb = b.slice(9, 32);
+				console.log(osna, osnb);
+				if (roughScale(osnb) > roughScale(osna)) {
+					var razn = roughScale(osnb) - roughScale(osna)
+					ma = ('0'.repeat(razn - 1) + '1' + ma).slice(0, 23);
+					var ca = ((a >= 0) ? '0' : '1') + osnb + ma;
+					var cb = b;
+					var ms = (addBinary(ma, mb)).slice(0, 23);
+					var s = (((a + b) >= 0) ? '0' : '1') + osnb + ms;
+				} else if (roughScale(osna) > roughScale(osnb)) {
+					var razn = roughScale(osna) - roughScale(osnb)
+					mb = ('0'.repeat(razn - 1) + '1' + mb).slice(0, 23);
+					var ca = a;
+					var cb = ((b >= 0) ? '0' : '1') + osna + mb;
+					var ms = (addBinary(ma, mb)).slice(0, 23);
+					var s = (((a + b) >= 0) ? '0' : '1') + osna + ms;
+				} else {
+					var ca = a;
+					var cb = b;
+					var ms = (addBinary(ma, mb)).slice(0, 23);
+					var s = (((a + b) >= 0) ? '0' : '1') + osna + ms;
+				}
+				document.getElementById('sl32output1').innerHTML = "<input readonly type='text' value='"+ ca +"'><br><input readonly type='text' value='"+ cb +"'><br><input readonly type='text' value='"+ s +"'><br>";
+			}
+			var a = v[1];
+			var b = v[3];
+			if (isNaN(a) || isNaN(b)) {
+				document.getElementById('sl32output2').innerHTML = "<input readonly type='text' value=''><br><input readonly type='text' value=''><br><input readonly type='text' value=''><br>";
+			} else {
+				var osna = a.slice(1, 9);
+				var ma = a.slice(9, 32);
+				var osnb = b.slice(1, 9);
+				var mb = b.slice(9, 32);
+				if (roughScale(osnb) > roughScale(osna)) {
+					var razn = roughScale(osnb) - roughScale(osna)
+					ma = ('0'.repeat(razn - 1) + '1' + ma).slice(0, 23);
+					var ca = ((a >= 0) ? '0' : '1') + osnb + ma;
+					var cb = b;
+					var ms = (addBinary(ma, mb)).slice(0, 23);
+					var s = (((a + b) >= 0) ? '0' : '1') + osnb + ms;
+				} else if (roughScale(osna) > roughScale(osnb)) {
+					var razn = roughScale(osna) - roughScale(osnb)
+					mb = ('0'.repeat(razn - 1) + '1' + mb).slice(0, 23);
+					var ca = a;
+					var cb = ((b >= 0) ? '0' : '1') + osna + mb;
+					var ms = (addBinary(ma, mb)).slice(0, 23);
+					var s = (((a + b) >= 0) ? '0' : '1') + osna + ms;
+				} else {
+					var ca = a;
+					var cb = b;
+					var ms = (addBinary(ma, mb)).slice(0, 23);
+					var s = (((a + b) >= 0) ? '0' : '1') + osna + ms;
+				}
+				document.getElementById('sl32output2').innerHTML = "<input readonly type='text' value='"+ ca +"'><br><input readonly type='text' value='"+ cb +"'><br><input readonly type='text' value='"+ s +"'><br>";
+			}
+		}
+		
+		function perevod32(a) {
+			var m = "";
+			var mi = 0;
+			if (Math.trunc(a) != 0) {
+				mi = String(bin(a)).length;
+				m = bin(a);
+			}
+			ac = Number('0.' + String(a).split('.')[1])
+			var pogr = true;
+			if (isInt(a)) {
+				if (mi <= 24) {
+					pogr = false;
+				}
+				m = m + '0'.repeat(50);
+			} else {
+				for (let i = 0; i <= 50; i++) {
+					console.log(ac);
+					ac *= 2;
+					console.log(ac);
+					if (ac == 1) {
+						m += '1';
+						ac = 0;
+						pogr = false;
+					} else if (ac > 1) {
+						m += '1';
+						ac = Number('0.' + String(ac).split('.')[1])
+					} else {
+						m += '0';
+					}
+				}
+			}
+			p = m.indexOf('1') + 1;
+			m = m.slice(p);
+			p = bin(127 - p + mi);
+			while (p.length < 8) {
+				p = '0' + p;
+			}
+			s = (((a >= 0) ? '0' : '1') + p + m).slice(0, 32);
+			return [s, pogr];
+		};
+		</script>
+	</head>
+	<body>
+		Перевести число в 32-х битный формат записи числа с плавающей точкой:<br>
+		<i>Можно вводить числа и десятичной дробью, и обыкновенной (например: 2/9)</i><br><br>
+		<b>Таблица 1</b>
+		<table>
+		<tr><td>1.</td><td><input id="perevod32text1" type="text"></td></tr>
+		<tr><td>2.</td><td><input id="perevod32text2" type="text"></td></tr>
+		<tr><td>3.</td><td><input id="perevod32text3" type="text"></td></tr>
+		<tr><td>4.</td><td><input id="perevod32text4" type="text"></td></tr>
+		<tr><td>5.</td><td><input id="perevod32text5" type="text"></td></tr>
+		<tr><td>6.</td><td><input id="perevod32text6" type="text"></td></tr>
+		<tr><td>7.</td><td><input id="perevod32text7" type="text"></td></tr>
+		<tr><td>8.</td><td><input id="perevod32text8" type="text"></td></tr>
+		<tr><td>9.</td><td><input id="perevod32text9" type="text"></td></tr>
+		<tr><td>10.</td><td><input id="perevod32text10" type="text"></td></tr><br>
+		</table><br>
+		<b>Таблица 2</b>
+		<table>
+		<tr><td>1.</td><td><input id="poteri32text1" type="text"></td></tr>
+		<tr><td>2.</td><td><input id="poteri32text2" type="text"></td></tr>
+		<tr><td>3.</td><td><input id="poteri32text3" type="text"></td></tr>
+		<tr><td>4.</td><td><input id="poteri32text4" type="text"></td></tr>
+		</table><br>
+		<button onclick="perevod32begin()">Сделать работу за тебя</button>
+		<hr>
+		<b>Представление чисел в бинарном формате и погрешность</b>
+		<div id="perevod32output1"></div>
+		<div id="perevod32output2"></div>
+		<div id="perevod32output3"></div>
+		<div id="perevod32output4"></div>
+		<div id="perevod32output5"></div>
+		<div id="perevod32output6"></div>
+		<div id="perevod32output7"></div>
+		<div id="perevod32output8"></div>
+		<div id="perevod32output9"></div>
+		<div id="perevod32output10"></div><br>
+		<b>Сложение чисел в формате IEEE 754</b>
+		<div id="sl32output1"></div>
+		<br>
+		<div id="sl32output2"></div><br>
+		<b>Числа, которые не изменяются при добавлении 1, 100 или 1000</b>
+		<div id="poteri32output1"></div>
+		<div id="poteri32output2"></div>
+		<div id="poteri32output3"></div>
+		<div id="poteri32output4"></div><br>
+		<hr>
+		<i>Зуевской Николай, О716Б</i>
+	</body>
+</html>
