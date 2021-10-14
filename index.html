@@ -156,13 +156,13 @@
 					var ca = ((a >= 0) ? '0' : '1') + osnb + ma;
 					var cb = b;
 					var ms = addBinary(ma, mb);
-					if (ms.length > 23) {
-						var raznm = ms.length - 23;
+					if (ms.length == 24) {
 						osnb = bin(roughScale(osnb) + roughScale(raznm));
 						while (osnb.length < 8) {
 							osnb = '0' + osnb;
 						}
-						ms = ms.slice(0 + raznm, 23 + raznm);
+						ms = ms.slice(1, 23);
+						ms = '0' + ms;
 					}
 					var s = (((a + b) >= 0) ? '0' : '1') + osnb + ms;
 				} else if (roughScale(osna) > roughScale(osnb)) {
@@ -171,26 +171,27 @@
 					var ca = a;
 					var cb = ((b >= 0) ? '0' : '1') + osna + mb;
 					var ms = addBinary(ma, mb);
-					if (ms.length > 23) {
+					if (ms.length == 24) {
 						var raznm = ms.length - 23;
 						osna = bin(roughScale(osna) + roughScale(raznm));
 						while (osna.length < 8) {
 							osna = '0' + osna;
 						}
-						ms = ms.slice(0 + raznm, 23 + raznm);
+						ms = ms.slice(1, 23);
+						ms = '0' + ms;
 					}
 					var s = (((a + b) >= 0) ? '0' : '1') + osna + ms;
 				} else {
 					var ca = a;
 					var cb = b;
 					var ms = addBinary(ma, mb);
-					if (ms.length > 23) {
-						var raznm = ms.length - 23;
+					if (ms.length == 24) {
 						osna = bin(roughScale(osna) + roughScale(raznm));
 						while (osna.length < 8) {
 							osna = '0' + osna;
 						}
-						ms = ms.slice(0 + raznm, 23 + raznm);
+						ms = ms.slice(1, 23);
+						ms = '0' + ms;
 					}
 					var s = (((a + b) >= 0) ? '0' : '1') + osna + ms;
 				}
@@ -211,13 +212,13 @@
 					var ca = ((a >= 0) ? '0' : '1') + osnb + ma;
 					var cb = b;
 					var ms = addBinary(ma, mb);
-					if (ms.length > 23) {
-						var raznm = ms.length - 23;
-						osnb = bin(roughScale(osnb) + roughScale(raznm));
+					if (ms.length == 24) {
+						osnb = bin(roughScale(osnb) + 1);
 						while (osnb.length < 8) {
 							osnb = '0' + osnb;
 						}
-						ms = ms.slice(0 + raznm, 23 + raznm);
+						ms = ms.slice(1, 23);
+						ms = '0' + ms;
 					}
 					var s = (((a + b) >= 0) ? '0' : '1') + osnb + ms;
 				} else if (roughScale(osna) > roughScale(osnb)) {
@@ -226,26 +227,26 @@
 					var ca = a;
 					var cb = ((b >= 0) ? '0' : '1') + osna + mb;
 					var ms = addBinary(ma, mb);
-					if (ms.length > 23) {
-						var raznm = ms.length - 23;
-						osna = bin(roughScale(osna) + roughScale(raznm));
+					if (ms.length == 24) {
+						osna = bin(roughScale(osna) + 1);
 						while (osna.length < 8) {
 							osna = '0' + osna;
 						}
-						ms = ms.slice(0 + raznm, 23 + raznm);
+						ms = ms.slice(1, 23);
+						ms = '0' + ms;
 					}
 					var s = (((a + b) >= 0) ? '0' : '1') + osna + ms;
 				} else {
 					var ca = a;
 					var cb = b;
 					var ms = addBinary(ma, mb);
-					if (ms.length > 23) {
-						var raznm = ms.length - 23;
-						osna = bin(roughScale(osna) + roughScale(raznm));
+					if (ms.length == 24) {
+						osna = bin(roughScale(osna) + 1);
 						while (osna.length < 8) {
 							osna = '0' + osna;
 						}
-						ms = ms.slice(0 + raznm, 23 + raznm);
+						ms = ms.slice(1, 23);
+						ms = '0' + ms;
 					}
 					var s = (((a + b) >= 0) ? '0' : '1') + osna + ms;
 				}
