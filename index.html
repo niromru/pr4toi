@@ -157,7 +157,7 @@
 					var cb = b;
 					var ms = addBinary(ma, mb);
 					if (ms.length == 24) {
-						osnb = bin(roughScale(osnb) + roughScale(raznm));
+						osnb = bin(roughScale(osnb) + 1);
 						while (osnb.length < 8) {
 							osnb = '0' + osnb;
 						}
@@ -172,8 +172,7 @@
 					var cb = ((b >= 0) ? '0' : '1') + osna + mb;
 					var ms = addBinary(ma, mb);
 					if (ms.length == 24) {
-						var raznm = ms.length - 23;
-						osna = bin(roughScale(osna) + roughScale(raznm));
+						osna = bin(roughScale(osna) + 1);
 						while (osna.length < 8) {
 							osna = '0' + osna;
 						}
@@ -186,7 +185,7 @@
 					var cb = b;
 					var ms = addBinary(ma, mb);
 					if (ms.length == 24) {
-						osna = bin(roughScale(osna) + roughScale(raznm));
+						osna = bin(roughScale(osna) + 1);
 						while (osna.length < 8) {
 							osna = '0' + osna;
 						}
