@@ -157,9 +157,7 @@
 					var cb = b;
 					var ms = addBinary(ma, mb);
 					if (ms.length == 24) {
-						console.log(osnb);
 						osnb = bin(roughScale(osnb) + 1);
-						console.log(osnb);
 						while (osnb.length < 8) {
 							osnb = '0' + osnb;
 						}
@@ -174,9 +172,7 @@
 					var cb = ((b >= 0) ? '0' : '1') + osna + mb;
 					var ms = addBinary(ma, mb);
 					if (ms.length == 24) {
-						console.log(osna);
 						osna = bin(roughScale(osna) + 1);
-						console.log(osna);
 						while (osna.length < 8) {
 							osna = '0' + osna;
 						}
@@ -189,9 +185,7 @@
 					var cb = b;
 					var ms = addBinary(ma, mb);
 					if (ms.length == 24) {
-						console.log(osna);
 						osna = bin(roughScale(osna) + 1);
-						console.log(osna);
 						while (osna.length < 8) {
 							osna = '0' + osna;
 						}
@@ -300,6 +294,7 @@
 		</script>
 	</head>
 	<body>
+		<div class="alert alert-primary" role="alert">Баг с вычислением суммы чисел был исправлен 15.10</div>
 		Перевести число в 32-х битный формат записи числа с плавающей точкой:<br>
 		<i>Можно вводить числа и десятичной дробью, и обыкновенной (например: 2/9)</i><br><br>
 		<b>Таблица 1</b>
